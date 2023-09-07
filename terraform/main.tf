@@ -12,7 +12,7 @@ data "google_client_config" "current" {
 resource "google_container_cluster" "example-cluster" {
   name               = var.cluster_name
   description        = "prometheus example k8s cluster"
-  region             = var.gcp_region
+  location           = var.gcp_region
   initial_node_count = "1"
 
   logging_service    = "logging.googleapis.com/kubernetes"
@@ -30,7 +30,7 @@ resource "google_container_node_pool" "pool0" {
   name       = "pool-0"
   cluster    = google_container_cluster.example-cluster.name
   node_count = 1
-  region     = var.gcp_region
+  location   = var.gcp_region
 
   autoscaling {
     min_node_count = 1

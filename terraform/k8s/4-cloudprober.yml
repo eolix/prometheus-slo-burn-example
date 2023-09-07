@@ -1,4 +1,4 @@
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: monitoring
@@ -7,6 +7,9 @@ metadata:
     app: cloudprober
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: cloudprober
   template:
     metadata:
       labels:
@@ -14,7 +17,7 @@ spec:
     spec:
       containers:
       - name: cloudprober
-        image: gcr.io/cre-prometheus-slo-alerting/cloudprober:latest
+        image: gcr.io/slo-testing/cloudprober:latest
         env:
         - name: PORT
           value: "8080"

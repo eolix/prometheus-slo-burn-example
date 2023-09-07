@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: grafana
@@ -7,13 +7,16 @@ metadata:
     app: grafana
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: grafana
   template:
     metadata:
       labels:
         app: grafana
     spec:
       containers:
-      - image: gcr.io/cre-prometheus-slo-alerting/grafana:latest
+      - image: gcr.io/slo-testing/grafana:latest
         name: grafana
         imagePullPolicy: Always
         ports:
@@ -31,13 +34,13 @@ metadata:
     prometheus.io/scrape: 'true'
 spec:
   type: NodePort
+  selector:
+    app: grafana
   ports:
   - port: 8080
     targetPort: 8080
-  selector:
-    app: grafana
 ---
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   namespace: monitoring
@@ -48,6 +51,13 @@ metadata:
   labels:
     app: grafana
 spec:
-  backend:
-    serviceName: grafana
-    servicePort: 8080
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: grafana
+            port:
+              number: 8080

@@ -10,7 +10,7 @@ spec:
     requests:
       storage: 100Gi
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: prometheus
@@ -19,6 +19,9 @@ metadata:
     app: prometheus
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus
   template:
     metadata:
       name: prometheus
@@ -28,7 +31,7 @@ spec:
       serviceAccountName: prometheus
       containers:
       - name: prometheus
-        image: gcr.io/cre-prometheus-slo-alerting/prometheus:latest
+        image: gcr.io/slo-testing/prometheus:latest
         imagePullPolicy: Always
         ports:
         - name: webui

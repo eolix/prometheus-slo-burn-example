@@ -1,4 +1,4 @@
-FROM grafana/grafana:6.0.1
+FROM grafana/grafana:9.5.7-ubuntu
 
 # We do this so we can have sqlite later
 USER root
@@ -6,10 +6,10 @@ RUN apt update && apt install -y sqlite && rm -rf /var/lib/apt/lists/*
 
 USER grafana
 RUN mkdir -p /var/log/grafana /var/lib/grafana
-COPY --chown=grafana:grafana grafana.ini /etc/grafana/
-COPY --chown=grafana:grafana datasource.yml /etc/grafana/provisioning/datasources/
-COPY --chown=grafana:grafana dashboard.yml /etc/grafana/provisioning/dashboards/
-COPY --chown=grafana:grafana *.json /var/lib/grafana/dashboards/
+COPY grafana.ini /etc/grafana/
+COPY datasource.yml /etc/grafana/provisioning/datasources/
+COPY dashboard.yml /etc/grafana/provisioning/dashboards/
+COPY *.json /var/lib/grafana/dashboards/
 
 # We need to run this command to make sure the database exists. We then modify
 # the database to set the default dashboard. We have to do this because we turn

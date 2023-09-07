@@ -6,7 +6,7 @@ This is home to example code for exposing SLIs using open source code in prometh
 
 -   `$ gcloud builds submit --project $GOOGLE_PROJECT` in the root directory.
 -   These images are currently published and publicly available from the project
-    `cre-prometheus-slo-alerting`.
+    `slo-testing`.
 
 ## Terraform setup
 
@@ -24,12 +24,9 @@ $ export REGION=europe-west2
 -   `$ terraform apply -var "gcp_region=$REGION"` - Will ask you before it does
     anything. Will take ~10m to actually run. You can also run `terraform plan`
     to just get a dry run output.
--   `$ gcloud container clusters get-credentials example --region $REGION
-    --project $GOOGLE_PROJECT` - Configures `kubectl` to work with the cluster
+-   `$ gcloud container clusters get-credentials example --region $REGION  --project $GOOGLE_PROJECT` - Configures `kubectl` to work with the cluster
     you just created.
--   `$ kubectl create clusterrolebinding $USER-cluster-admin-binding
-    --clusterrole=cluster-admin --user=$(gcloud config get-value account
-    --project $GOOGLE_PROJECT)` - Gives your user permissions to create cluster
+-   `$ kubectl create clusterrolebinding $USER-cluster-admin-binding --clusterrole=cluster-admin --user=$(gcloud config get-value account --project $GOOGLE_PROJECT)` - Gives your user permissions to create cluster
     role bindings that prometheus needs.
 -   `$ kubectl apply -f ./k8s`
 
